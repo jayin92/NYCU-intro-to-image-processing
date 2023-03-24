@@ -55,16 +55,15 @@ for i in range(2*h, 3*h):
         img[i, j, 1] = min(255, int(img[i, j, 1]) * 2)
 
 # Bilinaer Interpolation
-
 tar = img[0:h, w:2*w].copy()
 res = np.zeros((2*h, 2*w, 3), np.uint8)
 
 for i in range(0, 2*h):
     for j in range(0, 2*w):
-        x = i / (2*h) * h
-        y = j / (2*w) * w
-        x1 = int(x)
-        y1 = int(y)
+        x = i / 2
+        y = j / 2
+        x1 = i // 2
+        y1 = j // 2
         x2 = x1 + 1
         y2 = y1 + 1
         x1 = min(x1, h - 1)
@@ -109,10 +108,9 @@ for i in range(0, 2*h):
         xx = i / 2 - x1
         res[i, j] = (-0.5*tmp[0]+1.5*tmp[1]-1.5*tmp[2]+0.5*tmp[3])*xx**3 + (tmp[0]-2.5*tmp[1]+2*tmp[2]-0.5*tmp[3])*xx**2 + (-0.5*tmp[0]+0.5*tmp[2])*xx + tmp[1]
 
-
-# res = cv2.resize(tar, (2*w, 2*h), interpolation=cv2.INTER_CUBIC)
 res = np.clip(res, 0, 255)
 img[h:2*h, w:2*w] = res[0:h, 0:w]
 
+cv2.imwrite('result.jpg', img)
 cv2.imshow('image', img)
 cv2.waitKey(0)
