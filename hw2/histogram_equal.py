@@ -1,12 +1,13 @@
 import cv2
 import numpy as np
+import matplotlib.pyplot as plt
+
 
 # Read image
 img = cv2.imread("Q1.jpg", cv2.IMREAD_GRAYSCALE)
 
-ans = cv2.equalizeHist(img)
-
-cv2.imwrite("Q1_equal1.jpg", ans)
+# Draw histogram
+plt.hist(img.ravel(), 256, [0, 256])
 
 h, w = img.shape
 
@@ -32,10 +33,18 @@ for i in range(1, 256):
 
 cdf = cdf * 255
 
-cdf = cdf.astype(np.uint8)
 
 for i in range(h):
     for j in range(w):
-        img[i, j] = cdf[img[i, j]]
+        img[i, j] = round(cdf[img[i, j]])
+
+plt.hist(img.ravel(), 256, [0, 256])
+
+plt.legend(('original', 'equalized'), loc='upper left')
+plt.xlabel('Intensity')
+plt.ylabel('Number of pixels')
+
+# save plt in compact way
+plt.savefig('hist_equal_plt.png', dpi=300, bbox_inches='tight')
 
 cv2.imwrite("Q1_equal.jpg", img)

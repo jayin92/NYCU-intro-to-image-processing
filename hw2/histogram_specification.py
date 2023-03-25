@@ -16,6 +16,9 @@ ref_total = ref_h * ref_w
 tar_cnt = np.zeros(256, dtype=np.int32)
 ref_cnt = np.zeros(256, dtype=np.int32)
 
+plt.hist(tar.ravel(), 256, [0, 256])
+
+
 for i in range(tar_h):
     for j in range(tar_w):
         tar_cnt[tar[i, j]] += 1
@@ -24,10 +27,6 @@ for i in range(ref_h):
     for j in range(ref_w):
         ref_cnt[ref[i, j]] += 1
 
-# use matplotlib to plot the histogram
-plt.hist(tar.ravel(), 256, [0, 256])
-plt.hist(ref.ravel(), 256, [0, 256])
-plt.show()
 
 
 tar_prob = np.zeros(256, dtype=np.float32)
@@ -64,6 +63,14 @@ for i in range(tar_h):
 
 plt.hist(tar.ravel(), 256, [0, 256])
 plt.hist(ref.ravel(), 256, [0, 256])
+
+
+plt.legend(('before matching', 'after matching', 'target'), loc='upper left')
+plt.xlabel('Intensity')
+plt.ylabel('Number of pixels')
+
+# save plt in compact way
+plt.savefig('hist_match_plt.png', dpi=300, bbox_inches='tight')
 plt.show()
 
 
